@@ -1,0 +1,15 @@
+version: '2' 
+
+services:
+  angular: 
+    build:
+      context: . 
+    image: chat360-frontend:latest
+    container_name: chat360-frontend
+    ports:
+      - "4200:4200" 
+
+    networks:
+      - chat360
+networks:
+  chat360:

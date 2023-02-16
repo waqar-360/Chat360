@@ -1,0 +1,91 @@
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+  integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous" />
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" type="text/css"
+  rel="stylesheet" />
+
+<!-- Toolbar -->
+<div class="chat__wrapper" fxLayout="row" fxLayoutAlign="center center">
+  <mat-card *ngIf="isDataAvailable" class="chat__container">
+    <div class="chat__header">
+      <div class="chat__name">
+        {{currentUser.userName}}
+      </div>
+      <!-- <div style=" flex-grow: 1 "></div> -->
+      <div class="chat__actions">
+        <div class="chat__theme" onClick="">
+          <img src="assets/moon.svg" style="width: 36px; height: 36px;" alt="theme" />
+        </div>
+        <button (click)="authService.logout()" class="button button--block">
+          LEAVE
+        </button>
+
+      </div>
+    </div>
+    <div class="chat__body">
+      <div class='chat__users'>
+        <div class="users__wrapper">
+          <div class="users__heading">Users</div>
+          <div class="user__wrapper" *ngFor="let user of onlineUsers"
+           (click)='chatSelected(user); highlight(user)'
+           [ngClass]="{'highlight': selectedRowIndex == user.uuid}">
+            <div class='avatar avatar--bg'>
+              {{initials(user.userName)}}
+            </div>
+            <div title='' class="user__name">
+              {{user.userName}}
+            </div>
+
+          </div>
+        </div>
+      </div>
+
+      <div class="chat__messages">
+        <div class="messages__wrapper" fxLayout="column" fxLayoutAlign="space-between">
+          <div class="messages__container">
+            <div *ngFor="let message of messages">
+              <div *ngIf="
+                  message.sender.uuid!== currentUser.uuid;
+                  then incoming_msg;
+                  else outgoing_msg
+                "></div>
+              <ng-template #incoming_msg>
+                <div class="message__wrapper ">
+                  <div class='avatar avatar--bg'>
+                    {{initials(message.sender.userName)}}
+                  </div>
+                  <div class="message__container">
+                    <div class="message__text">{{message.text}}</div>
+                    <div class="message__timestamp">
+                      {{time(message.createdAt)}}
+                    </div>
+                  </div>
+                </div>
+              </ng-template>
+              <ng-template #outgoing_msg>
+                <div class="message__wrapper message__wrapper--right">
+                  <div class="message__container  message__container--right">
+                    <div class="message__text">{{message.text}}</div>
+                    <div class="message__timestamp message__timestamp--right">
+                      {{time(message.createdAt)}}
+                    </div>
+                  </div>
+                  <div class='avatar avatar--bg'>
+                    {{initials(message.sender.userName)}}
+                  </div>
+                </div>
+              </ng-template>
+            </div>
+          </div>
+
+          <form class="input__wrapper" (ngSubmit)="sendMessage()">
+            <input type="text" class="input" placeholder="Type your message here" name="newMessage"
+              [(ngModel)]="newMessage" />
+            <button class="input__send" type="submit">
+              <img class="send_icon" src='assets/send.svg' alt="send" />
+            </button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </mat-card>
+</div>
