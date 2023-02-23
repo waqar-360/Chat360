@@ -3,25 +3,29 @@ body {
   height: 100%;
 }
 
+:root {
+  --white: #ffffff;
+  --green: green;
+}
+
 .app-header {
   justify-content: space-between;
   background-color: rgb(48, 46, 46);
-  color: #ffffff;
+  color: var(--white);
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   z-index: 2;
-  box-shadow: 0 3px 5px -1px rgba(0, 0, 0, .2), 0 6px 10px 0 rgba(0, 0, 0, .14), 0 1px 18px 0 rgba(0, 0, 0, .12);
 }
 
 .login-wrapper {
   height: 100%;
 }
 
-.waqar360 {
+.logo {
   text-decoration: none;
-  color: #ffffff;
+  color: var(--white);
 }
 
 .box {
@@ -29,22 +33,22 @@ body {
   top: 0;
   opacity: 1;
   float: left;
-  padding: 60px 50px 40px 50px;
+  padding: 3.75rem 3.125rem 2.5rem 3.125rem;
   width: 100%;
-  background: #fff;
-  border-radius: 10px;
+  background: var(--white);
+  border-radius: 0.625rem;
   transform: scale(1);
   -webkit-transform: scale(1);
   -ms-transform: scale(1);
   z-index: 5;
-  max-width: 330px;
+  max-width: 20.625rem;
 }
 
 .box.back {
   transform: scale(.95);
   -webkit-transform: scale(.95);
   -ms-transform: scale(.95);
-  top: -20px;
+  top: -1.25rem;
   opacity: .8;
   z-index: -1;
 }
@@ -52,10 +56,10 @@ body {
 .box:before {
   content: "";
   width: 100%;
-  height: 30px;
-  border-radius: 10px;
+  height: 1.875rem;
+  border-radius: 0.625rem;
   position: absolute;
-  top: -10px;
+  top: -0.625rem;
   background: rgba(255, 255, 255, .6);
   left: 0;
   transform: scale(.95);
@@ -66,7 +70,7 @@ body {
 
 .login-wrapper .example-form {
   min-width: 100%;
-  max-width: 300px;
+  max-width: 18.75rem;
   width: 100%;
 }
 
@@ -83,25 +87,24 @@ body {
 }
 
 .login-wrapper mat-card-header mat-card-title {
-  font-size: 30px;
+  font-size: 1.875rem;
   margin: 0;
 }
 
 .login-wrapper .mat-card {
-  padding: 40px 70px 50px;
+  padding: 2.5rem 4.375rem 3.125rem;
 }
 
 .login-wrapper .mat-stroked-button {
-  border: 1px solid currentColor;
-  line-height: 54px;
-  background: #FFF7FA;
+  border: 0.063rem solid currentColor;
+  line-height: 3.375rem;
+  background: var(--white);
 }
 
 .login-wrapper .mat-form-field-appearance-legacy .mat-form-field-infix {
   padding: 0.8375em 0;
 }
 
-
 .btn-success {
-  color: green;
+  color: var(--green)
 }

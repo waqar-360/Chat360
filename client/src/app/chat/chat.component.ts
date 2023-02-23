@@ -1,7 +1,26 @@
-import { CommentStmt } from '@angular/compiler';
-import { Component, ModuleWithComponentFactories, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+/*
+ Copyright (c) 2023, Xgrid Inc, http://xgrid.co
+
+ Licensed under the Apache License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+
+ http://www.apache.org/licenses/LICENSE-2.0
+
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+ */
+
+/**Npm imports */
+import { Component, ModuleWithComponentFactories, OnInit } from '@angular/core';;
+
+/** Types import */
 import { User } from '../commons/type';
+
+/** Service import */
 import { AuthService } from '../services/auth.service';
 import { ChatService } from '../services/chat.service';
 import { SocketService } from '../services/socket.service';
@@ -26,7 +45,7 @@ export class ChatComponent implements OnInit {
     private chatService: ChatService,
     private authService: AuthService,
     private socketService: SocketService,
-  ) {}
+  ) { }
   ngOnInit() {
     this.chatService.getCurrentUser().subscribe((res: any) => {
       this.currentUser = res;
@@ -48,15 +67,30 @@ export class ChatComponent implements OnInit {
     return;
   }
 
+  /**
+   * hightlight selected row
+   * @param row 
+   * @return void
+   */
   highlight(row) {
     this.selectedRowIndex = row.uuid;
   }
 
+  /**
+   * 
+   * @param users 
+   * @return void
+   */
   setActiveUsers(users: User[]) {
     this.onlineUsers = users;
     this.onlineUsers.length ? this.chatSelected(this.onlineUsers[0]) : '';
   }
 
+  /**
+   * Select a chat
+   * @param user 
+   * @returns void
+   */
   chatSelected(user) {
     this.selectedRowIndex = user.uuid;
     this.chatService
@@ -69,6 +103,10 @@ export class ChatComponent implements OnInit {
       });
   }
 
+  /**
+   * Send message
+   * @returns void
+   */
   sendMessage() {
     if (this.validateInput()) {
       const message = {
@@ -81,10 +119,19 @@ export class ChatComponent implements OnInit {
     }
   }
 
+  /**
+   * validate the input message
+   * @returns boolean
+   */
   validateInput() {
     return this.newMessage.length > 0;
   }
 
+  /**
+   * Convert timestamp to human readable date
+   * @param timestamp 
+   * @returns date
+   */
   time(timestamp) {
     const date = new Date(timestamp * 1000);
     const normalizeDigit = (digit: number) =>
@@ -95,6 +142,11 @@ export class ChatComponent implements OnInit {
     )}`;
   }
 
+  /**
+   * Get initials from string
+   * @param name 
+   * @returns string
+   */
   initials(name) {
     let initial = '';
 

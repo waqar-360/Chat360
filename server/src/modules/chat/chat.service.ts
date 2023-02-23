@@ -1,4 +1,20 @@
-import { BadRequestException, Injectable } from '@nestjs/common';
+/*
+ Copyright (c) 2023, Xgrid Inc, http://xgrid.co
+
+ Licensed under the Apache License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+
+ http://www.apache.org/licenses/LICENSE-2.0
+
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+ */
+
+import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { User } from '../user';
 import { Repository } from 'typeorm';
@@ -24,13 +40,13 @@ export class ChatService {
 
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
-  ) {}
+  ) { }
 
   /**
-   *
+   * Create a new caht if not exist
    * @param createChatDTO
    * @param fromId
-   * @returns
+   * @returns Object<Chat>
    */
   async createChat(createChatDTO: CreateChatDto, fromId) {
     const exists = await this.chatRepository.findOne({
@@ -65,9 +81,9 @@ export class ChatService {
   }
 
   /**
-   *
+   * Get Chat list 
    * @param userId
-   * @returns
+   * @returns Object<Chat>[]
    */
   public async getChatList(
     userId: string,
@@ -117,8 +133,7 @@ export class ChatService {
             `;
     let paginatedSql =
       sql +
-      ` LIMIT ${pagination.limit} OFFSET ${
-        pagination.limit * (pagination.page - 1)
+      ` LIMIT ${pagination.limit} OFFSET ${pagination.limit * (pagination.page - 1)
       }`;
     let totalSql = `SELECT 
                     COUNT(*) :: INTEGER
@@ -132,11 +147,11 @@ export class ChatService {
   }
 
   /**
-   *
+   * Get Converstation
    * @param chatId
    * @param from
    * @param pagination
-   * @returns
+   * @returns Object<Chat>
    */
   public async getConversation(
     chatId: string,
@@ -148,9 +163,9 @@ export class ChatService {
   }
 
   /**
-   *
+   * Get Chat By Id 
    * @param id
-   * @returns
+   * @returns Object<Chat>
    */
   public async getChatById(id: string) {
     return await this.chatRepository.findOne({
@@ -173,10 +188,10 @@ export class ChatService {
   }
 
   /**
-   *
+   * Create a new message 
    * @param createMessageDto
    * @param senderId
-   * @returns
+   * @returns Object<Message>
    */
   public async createMessage(
     createMessageDto: CreateMessageDto,

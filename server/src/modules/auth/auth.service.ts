@@ -1,7 +1,22 @@
+/*
+ Copyright (c) 2023, Xgrid Inc, http://xgrid.co
+
+ Licensed under the Apache License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+
+ http://www.apache.org/licenses/LICENSE-2.0
+
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+ */
+
 import { HttpException, Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { ResponseCode, ResponseMessage } from '../../utils/enum';
-import { MailService } from '../../utils/mailer/mail.service';
 import { RegisterPayload } from '.';
 import { Hash } from '../../utils/Hash';
 import { User, UsersService } from './../user';
@@ -15,11 +30,17 @@ export class AuthService {
   constructor(
     private readonly jwtService: JwtService,
     private readonly userService: UsersService,
-    private readonly mailerservice: MailService,
     private readonly cacheService: CacheManagerService,
     private readonly chatGateWayService: ChatGateway,
   ) {}
 
+  /**
+   * create token for user
+   * @param user 
+   * @param expiryTime 
+   * @param subject 
+   * @returns Object
+   */
   async createToken(
     user: User,
     expiryTime?: number | string,
@@ -63,6 +84,11 @@ export class AuthService {
     });
   }
 
+  /**
+   * validate User login request
+   * @param payload 
+   * @returns Http Exception || User
+   */
   async validateUser(payload: LoginPayload): Promise<any> {
     const user = await this.userService.getByEmail(payload.email.toLowerCase());
     if (!user) {
@@ -81,6 +107,11 @@ export class AuthService {
     return user;
   }
 
+  /**
+   * Get User By Id
+   * @param userId 
+   * @returns Object<User>
+   */
   async getUserById(userId: string) {
     return this.userService.get(userId);
   }
@@ -98,10 +129,6 @@ export class AuthService {
         process.env.JWT_TIME_FORGOT_PASSWORD,
         user.password,
       );
-      await this.mailerservice.sendForgotPasswordMail(
-        user.email,
-        token.accessToken,
-      );
       return;
     } else {
       throw new HttpException(
@@ -111,6 +138,12 @@ export class AuthService {
     }
   }
 
+  /**
+   * Verify password Expiry Link
+   * @param email 
+   * @param token 
+   * @returns void || Exception
+   */
   async checkPasswordLinkExpiry(email: string, token: string) {
     try {
       const user = await this.userService.getByEmail(email);
@@ -137,7 +170,9 @@ export class AuthService {
   }
 
   /**
-   *
+   * logout current user
+   * @param user 
+   * @returns void
    */
   public async logout(user: User) {
     this.cacheService.del(user.uuid);

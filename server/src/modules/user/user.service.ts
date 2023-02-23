@@ -1,3 +1,19 @@
+/*
+ Copyright (c) 2023, Xgrid Inc, http://xgrid.co
+
+ Licensed under the Apache License, Version 2.0 (the "License");
+ you may not use this file except in compliance with the License.
+ You may obtain a copy of the License at
+
+ http://www.apache.org/licenses/LICENSE-2.0
+
+ Unless required by applicable law or agreed to in writing, software
+ distributed under the License is distributed on an "AS IS" BASIS,
+ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ See the License for the specific language governing permissions and
+ limitations under the License.
+ */
+
 import {
   HttpException,
   Injectable,
@@ -8,7 +24,6 @@ import { Hash } from '../../utils/Hash';
 import { RegisterPayload } from '../auth';
 import { Repository } from 'typeorm';
 import { ResponseCode, ResponseMessage } from '../../utils/enum';
-
 import { User, UserFillableFields } from './user.entity';
 
 @Injectable()
@@ -17,15 +32,30 @@ export class UsersService {
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
   ) {}
-
+  
+  /**
+   * Get User by Id
+   * @param uuid 
+   * @returns Object<User> 
+   */
   async get(uuid: string) {
     return this.userRepository.findOneBy({ uuid });
   }
 
+  /**
+   * Get User by email
+   * @param email 
+   * @returns Object<User>
+   */
   async getByEmail(email: string) {
     return await this.userRepository.findOneBy({ email });
   }
 
+  /**
+   * Create a new user
+   * @param payload 
+   * @returns Object<User> || Exception
+   */
   async create(payload: UserFillableFields) {
     const user = await this.getByEmail(payload.email);
 
